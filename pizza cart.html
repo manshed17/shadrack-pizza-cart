@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="//unpkg.com/alpinejs" defer></script>
+  
+</head>
+
+   
+
+<body>
+    
+   <div class= "container" 
+   x-data="
+   {displayCart:false, 
+    smallPizzaPrize: 0.00 , 
+    mediumPizzaPrize: 0.00, 
+    largePizzaPrize: 0.00,
+    cartpic:true,
+    checkout:false,
+    cartpic1:true,
+    checkoutButton:false,
+    payButton:false,
+    messageDisplay:'',
+    paymentAmount: 0,
+    smallPizzaQty: 0,
+    mediumPizzaQty: 0,
+    largePizzaQty: 0,
+    
+    cartTotal() {return this.smallPizzaPrize + this.mediumPizzaPrize + this.largePizzaPrize} ,
+    minusButtonSmallQty(){
+        if(this.smallPizzaQty > 0){
+            return this.smallPizzaQty -= 1;
+        }
+    },
+    minusButtonMedimQty(){
+        if(this.mediumPizzaQty > 0){
+            return this.mediumPizzaQty -=1;
+        }
+    },
+    minusButtonLargeQty(){
+        if(this.smallPizzaPrize > 0){
+            return this.largePizzaQty -=1;
+        }
+    },
+    minusButtonSmall(){
+        if(this.smallPizzaPrize > 0){
+            return this.smallPizzaPrize -= 66.99
+        }
+    },
+    minusButtonMediun(){
+        if(this.mediumPizzaPrize > 0){
+            return this.mediumPizzaPrize -= 78.99
+        }
+    },
+    minusButtonLarge(){
+        if(this.largePizzaPrize > 0){
+            return this.largePizzaPrize -= 127.99
+        }
+    },
+    messageBox(){
+
+        if(!this.paymentAmount){
+            this.messageDisplay = 'please enter amount'
+        }
+        else if (this.cartTotal () > this.paymentAmount){
+            this.messageDisplay = 'Sorry - that is not enough money!'
+        }
+        else{
+            this.messageDisplay = 'Enjoy your pizzas'
+        
+        setTimeout(()=>{
+            this.checkout=false;
+            this.cartpic1 = true;
+            this.payButton= false;
+            this.cartRefresh()
+        }, 5000)
+        }
+
+    },
+    cartEmptyMessage(){
+        if(cartTotal()==0){
+            this.emptyCart = 'cart is empty!'
+            
+        }
+    },
+    
+    cartRefresh(){
+        this.smallPizzaPrize= 0; 
+        this.mediumPizzaPrize= 0; 
+        this.largePizzaPrize= 0;
+        this.paymentAmount= 0;
+        this.smallPizzaQty= 0;
+        this.mediumPizzaQty= 0;
+        this.largePizzaQty=0;
+        this.messageDisplay = '';
+
+    },
+  
+ }">
+ 
+
+
+    <h1>Perfect Pizza</h1> 
+<div class="all">
+    <div class="inline1" x-show="cartpic">
+        <button class="stbutton" @click="displayCart= true; cartpic= false">
+        <img class="inline" src="pizza-street-food-cart-colorful-image-vector-17456197-removebg-preview.png" width="30" alt="">
+       display Cart
+
+    </button>
+    R<datain x-text="cartTotal().toFixed(2)"></datain>
+    </div>  
+   
+    <div class="cartbox">
+
+        <div class="cart" x-show="displayCart"> 
+            <table>
+            <tr>
+                <td class="cartpic1">
+
+                    <button class="stbutton"  @click="displayCart =false; cartpic= true">
+                    <img class="inline" src="pizza-street-food-cart-colorful-image-vector-17456197-removebg-preview.png" width="30" alt="">hide Cart</button>
+            
+                </td>
+            </tr>
+            <tr class="blankRow">
+                <td colspan="3"></td>
+            </tr>
+            <tr>
+            <td class = "header4">
+                <cartAndPic> cart
+                <img class="fgf" src ="pizza-street-food-cart-colorful-image-vector-17456197-removebg-preview.png" width="30" alt="">
+                    
+                </cartAndPic>
+            </td>
+            </tr> 
+            <tr class="blankRow">
+                <td colspan="3"></td>
+            </tr>
+                <tr x-show="smallPizzaQty >0 " >
+                    <td class="tdStyle">Small Pizza</td>
+                    <td class="tdStyle">
+                        (<qty x-text="smallPizzaQty"></qty>)
+                        <button class="change" x-on:click="smallPizzaPrize += 66.99, smallPizzaQty += 1">+</button>
+                        <button class="change" x-on:click="minusButtonSmall(), minusButtonSmallQty()">-</button>
+                    </td>
+                    <td class="tdStyle">
+                        R<datain x-text="smallPizzaPrize.toFixed(2)"></datain>                   
+                     </td>
+                </tr>
+                <tr x-show="mediumPizzaQty >0 ">
+                    <td class="tdStyle">Medium Pizza</td>
+                    <td class="tdStyle">
+                        (<qty x-text="mediumPizzaQty"></qty>)
+                        <button class="change" @click="mediumPizzaPrize += 78.99, mediumPizzaQty +=1">+</button>
+                        <button class="change" @click="minusButtonMediun(), minusButtonMedimQty()">-</button>
+                    </td>
+                    <td class="tdStyle">
+                        R<datain x-text="mediumPizzaPrize.toFixed(2)"></datain> 
+                    </td>
+                </tr>
+                <tr x-show="largePizzaQty >0 ">
+                    <td class="tdStyle">Large Pizza</td>
+                    <td class="tdStyle">
+                        (<qty x-text="largePizzaQty"></qty>)
+                        <button class="change" x-on:click="largePizzaPrize += 127.99, largePizzaQty +=1">+</button>
+                        <button class="change" x-on:click="minusButtonLarge(), minusButtonLargeQty()">-</button>
+                        
+                    </td>
+                    <td class="tdStyle">
+                        R<datain x-text="largePizzaPrize.toFixed(2)"></datain> 
+                    </td>
+                </tr>
+                <tr x-show= "cartTotal>0">
+                    <td class="tdStyle" colspan="2">Total Cost</td>
+                    
+                    <td class="tdStyle">
+                        R<datain x-text="cartTotal().toFixed(2)"></datain>
+                    </td>
+                </tr>
+                <tr x-show="checkout">
+                
+                <td class="tdStyle"colspan="3">
+                    <div class="message" x-text="messageDisplay"><br></div>
+                    <label for=""><br> Payment amount</label>
+                    <input class="amount" type="number" placeholder="amount to pay" x-model="paymentAmount">
+                </td>
+            
+        </tr>
+        <tr class="emptyCart" x-show="cartTotal() == 0">
+        <td colspan="3">
+           <h3> cart is empty!</h3>
+        </td>
+         </tr>
+            </table>
+            <br>
+            <div x-show="cartpic1">
+            <div class="check">
+                <button class="checkb" @click="checkout = true; cartpic1=false; payButton=true" x-show="cartTotal()> 0" >Checkout</button>
+            </div>
+        </div>
+        <div x-show="payButton">
+            <div class="check">
+                <button class="checkb" @click="messageBox">pay</button>
+            </div>
+        </div>
+        
+    </div>
+
+    </div>
+</div>
+    <br>
+    <br>
+    <br>
+    <div class= "PizzaPamphlet">  
+        <div class= "PizzaPamphlet0">  
+            
+            <img class = "fix_image" src= "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg/220px-Eq_it-na_pizza-margherita_sep2005_sml.jpg" alt=""> 
+            <h2>Medium Pizza</h2>
+            <h3>R78.99</h3>
+            <span>medium margeritha pizza with 3 toppings max. 2 or less meat topping. 3 or less other toppings.</span>
+            <br>
+            <br>
+            <button class = "but1" @click="mediumPizzaPrize += 78.99, mediumPizzaQty +=1" >buy</button>
+        </div>
+
+        <div class= "PizzaPamphlet1">  
+            
+                <img class = "fix_image2" src= "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg/220px-Eq_it-na_pizza-margherita_sep2005_sml.jpg" alt="">
+                <h2>Large Pizza</h2>
+                <h3>R127.99</h3>
+                <box>large margeritha pizza with 3 toppings max. 3 meat toppings max. 3 or less other toppings.</box>
+                <br>
+                <br>
+
+                <button class = "but1" x-on:click="largePizzaPrize += 127.99, largePizzaQty +=1">
+                    buy</button>
+        </div>
+
+   
+        <div class= "PizzaPamphlet2">  
+          
+                <img class = "fix_image3" src= "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg/220px-Eq_it-na_pizza-margherita_sep2005_sml.jpg" alt="">
+                <h2>Small Pizza</h3>
+                    <h3>R66.99</h3>
+                <man>small pizza with 3 toppings
+            1 meat topping.
+            3 or less other toppings.
+            <br>
+            <br>
+            <button class =  "but1" x-on:click="smallPizzaPrize += 66.99, smallPizzaQty += 1">
+                buy</button>
+        </man>
+        </div> 
+        </div>
+        <div class= "footer" >
+            <div class = "shad">
+           <a> Contact us at: 076 8773 475<br> /twitter </a><br>
+           <b1>/fb </b1><br>
+           <c>/insta </c><br>
+           <de> @perfectpizza</de>
+           </div>
+           <div class="side">
+            Pizza Plaza<br>
+            Dough Road<br>
+            Base Town
+           </div>
+        </div>
+    </div>
+
+      
+ 
+</body>
+</html>
