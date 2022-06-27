@@ -43,7 +43,7 @@
         }
     },
     minusButtonLargeQty(){
-        if(this.smallPizzaPrize > 0){
+        if(this.largePizzaQty > 0){
             return this.largePizzaQty -=1;
         }
     },
@@ -96,7 +96,8 @@
         this.paymentAmount= 0;
         this.smallPizzaQty= 0;
         this.mediumPizzaQty= 0;
-        this.largePizzaQty=0;
+        this.largePizzaQty= 0;
+        
         this.messageDisplay = '';
 
     },
